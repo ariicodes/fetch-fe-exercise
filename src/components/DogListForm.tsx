@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 interface DogListFormProps {
@@ -19,40 +19,51 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		try {
 			const res = await axios.get(source);
 			const data = await res.data.message;
-			// Return the fetched image URLs
+			// RETURN THE FETCHED IMAGE URLS
 			return data;
 		} catch (err) {
 			console.error('ERROR:', err);
-			// Handle errors appropriately (optional)
-			return []; // Return empty array to avoid issues
+			return []; // RETURN EMPTY ARRAY TO AVOID ISSUES
 		}
 	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const selectedOpts = Array.from(e.target.selectedOptions).map(
-			option => `https://dog.ceo/api/breed/${option.value}/images`
+			option => option.value
 		);
 		setOptions(selectedOpts);
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); // Prevent default form submission
+		e.preventDefault(); // PREVENT DEFAULT FORM SUBMISSION
 
 		const allImageUrls: string[] = [];
-		// Fetch images for each selected option
+		// FETCH IMAGES FOR EACH SELECTED OPTION
 		for (const option of options) {
-			const fetchedImages = await getImages(option);
+			const fetchedImages = await getImages(
+				`https://dog.ceo/api/breed/${option}/images`
+			);
 			allImageUrls.push(...fetchedImages);
 		}
 
-		// Set the final images state after all fetches are complete
+		// SET THE FINAL IMAGE STATE AFTER ALL IMAGES ARE FETCHED
 		setImages(allImageUrls);
 	};
 
 	useEffect(() => {
-		// Fetch images for initially selected options
+		// FETCH IMAGES FOR INITIALLY SELECTED OPTIONS
 		options.forEach(getImages);
 	}, [options]);
+
+	const selectRef = useRef<HTMLSelectElement>(null);
+
+	const handleReset = (e: React.UIEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		setImages([]);
+		if (selectRef.current) {
+			selectRef.current.selectedIndex = -1; // Clear selection
+		}
+	};
 
 	return (
 		<form className='flex flex-col mb-16' onSubmit={handleSubmit}>
@@ -69,6 +80,7 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 					multiple
 					className='border-2 rounded-lg px-10 py-2 bg-slate-700 text-lg h-52'
 					onChange={handleChange}
+					ref={selectRef}
 				>
 					{dogList &&
 						dogList.map((dog, i) => (
@@ -79,10 +91,17 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 				</select>
 			</div>
 			<button
-				className='bg-blue-800 text-white p-2 rounded-lg font-bold'
+				className='bg-blue-800 text-white p-2 rounded-lg font-bold mb-2'
 				type='submit'
 			>
 				Show me the doggos!
+			</button>
+			<button
+				className='bg-fuchsia-700 text-white p-2 rounded-lg font-bold'
+				type='button'
+				onClick={handleReset}
+			>
+				Reset gallery
 			</button>
 		</form>
 	);
