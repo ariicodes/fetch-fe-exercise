@@ -44,7 +44,7 @@ const Hero = ({ dogList }: { dogList: string[] }) => {
 		<header className='flex flex-col items-center mb-12 pt-20' id='top'>
 			<h1 className='z-20 mb-10 text-center'>
 				<div className='text-4xl lg:text-6xl -mb-2'>Welcome to</div>
-				<div className='text-8xl lg:text-9xl font-black uppercase -rotate-6 -mb-20'>
+				<div className='text-8xl lg:text-9xl font-black uppercase -rotate-6 -mb-20 drop-shadow-xl bg-gradient-to-b from-transparent via-slate-800 to-transparent'>
 					Doggo
 				</div>
 			</h1>
@@ -55,6 +55,16 @@ const Hero = ({ dogList }: { dogList: string[] }) => {
 				<p className='text-center animate-bounce'>
 					☝️Click the doggo to generate a random pic☝️
 				</p>
+				<div className='mt-10 bg-gradient-to-r from-transparent via-blue-800/10 to-transparent w-screen flex flex-col items-center'>
+					<div className='w-96 h-1 bg-gradient-to-r from-transparent via-blue-300 to-transparent'></div>
+					<p className='text-2xl w-96 text-center my-10'>
+						Doggo is a dog image gallery with open source photos from{' '}
+						<a href='https://dog.ceo/dog-api/' target='_blank'>
+							DogAPI
+						</a>
+					</p>
+					<div className='w-96 h-1 bg-gradient-to-r from-transparent via-blue-300 to-transparent'></div>
+				</div>
 			</div>
 		</header>
 	);
