@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DogListForm from './components/DogListForm';
 import ImageGallery from './components/ImageGallery';
+import Hero from './components/Hero';
 
 function App() {
 	const [dogList, setDogList] = useState<string[]>([]);
@@ -35,8 +36,8 @@ function App() {
 	}, []);
 
 	return (
-		<main className='px-24'>
-			<h1 className='text-6xl font-black uppercase text-center my-10'>Doggo</h1>
+		<main className='px-10 lg:px-24'>
+			<Hero dogList={dogList} />
 			<DogListForm dogList={dogList} setImages={setImages} />
 			<ImageGallery images={images} />
 		</main>
