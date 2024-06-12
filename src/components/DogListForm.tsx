@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 interface DogListFormProps {
@@ -8,6 +8,9 @@ interface DogListFormProps {
 
 const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 	const [options, setOptions] = useState<string[]>([]);
+	const [checkedState, setCheckedState] = useState<{ [key: string]: boolean }>(
+		{}
+	);
 
 	// FORMATTING BREED VALUES
 	const formatBreed = (breed: string) => {
@@ -27,11 +30,19 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		}
 	};
 
-	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selectedOpts = Array.from(e.target.selectedOptions).map(
-			option => option.value
-		);
-		setOptions(selectedOpts);
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { checked, value } = e.target;
+
+		setCheckedState(prevState => ({
+			...prevState,
+			[value]: checked,
+		}));
+
+		if (checked) {
+			setOptions([...options, value]);
+		} else {
+			setOptions(options.filter(opt => opt !== value));
+		}
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,41 +66,35 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		options.forEach(getImages);
 	}, [options]);
 
-	const selectRef = useRef<HTMLSelectElement>(null);
-
 	const handleReset = (e: React.UIEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		setOptions([]);
 		setImages([]);
-		if (selectRef.current) {
-			selectRef.current.selectedIndex = -1; // Clear selection
-		}
+		setCheckedState({});
 	};
 
 	return (
 		<form className='flex flex-col mb-16' onSubmit={handleSubmit}>
-			<div className='flex flex-col mb-4'>
-				<label htmlFor='breed-select' className='font-bold mb-1 pl-1 text-xl'>
-					Select one or more breeds{' '}
-					<span className='font-extralight'>
-						Hold ctrl/cmd while clicking to select multiple
-					</span>
-				</label>
-				<select
-					name='breed-select'
-					id='breed-select'
-					multiple
-					className='border-2 rounded-lg px-10 py-2 bg-slate-700 text-lg h-52'
-					onChange={handleChange}
-					ref={selectRef}
-				>
+			<fieldset className='pl-1 text-xl flex flex-col mb-4'>
+				<legend className='font-bold'>Select one or more breeds</legend>
+				<div className='h-52 flex flex-wrap border-2 rounded-lg px-8 py-6 bg-slate-700 overflow-auto gap-4 '>
 					{dogList &&
 						dogList.map((dog, i) => (
-							<option value={formatBreed(dog)} key={i}>
-								{dog}
-							</option>
+							<div key={i} className='w-60'>
+								<input
+									type='checkbox'
+									name={formatBreed(dog)}
+									id={formatBreed(dog)}
+									className='mr-2 size-4'
+									value={formatBreed(dog)}
+									checked={!!checkedState[formatBreed(dog)]}
+									onChange={handleChange}
+								/>
+								<label htmlFor={formatBreed(dog)}>{dog}</label>
+							</div>
 						))}
-				</select>
-			</div>
+				</div>
+			</fieldset>
 			<button
 				className='bg-blue-800 text-white p-2 rounded-lg font-bold mb-2'
 				type='submit'
@@ -97,7 +102,7 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 				Show me the doggos!
 			</button>
 			<button
-				className='bg-fuchsia-700 text-white p-2 rounded-lg font-bold'
+				className='border-2 border-blue-800 bg-blue-800/25 text-white p-2 rounded-lg font-bold'
 				type='button'
 				onClick={handleReset}
 			>
