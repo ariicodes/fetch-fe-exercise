@@ -77,7 +77,7 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		<form className='flex flex-col mb-16' onSubmit={handleSubmit}>
 			<fieldset className='pl-1 text-xl flex flex-col mb-4'>
 				<legend className='font-bold'>Select one or more breeds</legend>
-				<div className='h-52 flex flex-wrap border-2 rounded-lg px-8 py-6 bg-slate-700 overflow-auto gap-4 '>
+				<div className='h-52 flex flex-wrap border-2 rounded-lg px-8 py-6 bg-slate-700 overflow-auto gap-4'>
 					{dogList &&
 						dogList.map((dog, i) => (
 							<div key={i} className='w-60'>
