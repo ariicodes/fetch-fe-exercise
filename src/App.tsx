@@ -36,10 +36,11 @@ function App() {
 	}, []);
 
 	return (
-		<main className='px-10 lg:px-24'>
+		<main className='px-10 lg:px-24 pb-20'>
 			<Hero dogList={dogList} />
 			<DogListForm dogList={dogList} setImages={setImages} />
 			<ImageGallery images={images} />
+			<a href='#top'>BACK TO TOP</a>
 		</main>
 	);
 }
