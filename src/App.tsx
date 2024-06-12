@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import DogListForm from './components/DogListForm';
+import ImageGallery from './components/ImageGallery';
 
 function App() {
 	const [dogList, setDogList] = useState<string[]>([]);
+	const [images, setImages] = useState<string[]>([]);
 
 	useEffect(() => {
 		const getDogs = async () => {
@@ -18,7 +20,7 @@ function App() {
 				for (const key in data) {
 					if (Array.isArray(data[key]) && data[key].length > 0) {
 						for (const val of data[key]) {
-							newList.push(`${val} ${key}`);
+							newList.push(`${key} ${val}`);
 						}
 					} else {
 						newList.push(key);
@@ -33,10 +35,11 @@ function App() {
 	}, []);
 
 	return (
-		<>
+		<main className='px-24'>
 			<h1 className='text-6xl font-black uppercase text-center my-10'>Doggo</h1>
-			<DogListForm dogList={dogList} />
-		</>
+			<DogListForm dogList={dogList} setImages={setImages} />
+			<ImageGallery images={images} />
+		</main>
 	);
 }
 
