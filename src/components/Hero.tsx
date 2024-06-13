@@ -1,17 +1,9 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { formatBreed } from '../helpers';
 
 const Hero = ({ dogList }: { dogList: string[] }) => {
 	const [image, setImage] = useState<string>('');
-
-	// FORMATTING BREED VALUES
-	const formatBreed = (breed: string) => {
-		let breedSplit: string[] = [];
-		if (breed) {
-			breedSplit = breed.split(' ');
-		}
-		return breedSplit.join('-');
-	};
 
 	const getRandomImage = async () => {
 		let refetch: number = 5;

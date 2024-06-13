@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { formatBreed, getImages } from '../helpers';
 
 interface DogListFormProps {
 	dogList: string[];
@@ -11,24 +11,6 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 	const [checkedState, setCheckedState] = useState<{ [key: string]: boolean }>(
 		{}
 	);
-
-	// FORMATTING BREED VALUES
-	const formatBreed = (breed: string) => {
-		const breedSplit = breed.split(' ');
-		return breedSplit.join('-');
-	};
-
-	const getImages = async (source: string) => {
-		try {
-			const res = await axios.get(source);
-			const data = await res.data.message;
-			// RETURN THE FETCHED IMAGE URLS
-			return data;
-		} catch (err) {
-			console.error('ERROR:', err);
-			return []; // RETURN EMPTY ARRAY TO AVOID ISSUES
-		}
-	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { checked, value } = e.target;
