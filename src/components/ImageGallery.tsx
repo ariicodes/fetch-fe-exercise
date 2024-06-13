@@ -10,7 +10,7 @@ const ImageGallery = ({ images }: { images: string[] }) => {
 						<img
 							src={image}
 							alt={image}
-							className='object-cover object-center h-72'
+							className='object-cover object-center h-72 rounded-lg'
 						/>
 					</li>
 				))}
