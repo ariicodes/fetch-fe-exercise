@@ -50,7 +50,7 @@ const Hero = ({ dogList }: { dogList: string[] }) => {
 			</h1>
 			<div className='z-10 flex flex-col items-center'>
 				<button type='button' onClick={getRandomImage}>
-					<img src={image} alt={image} className='w-80 lg:w-96 mb-2' />
+					<img src={image} alt={image} className='w-80 lg:w-96 mb-2 rounded-lg' />
 				</button>
 				<p className='text-center animate-bounce'>
 					☝️Click the doggo to generate a random pic☝️
