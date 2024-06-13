@@ -12,14 +12,17 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		{}
 	);
 
+	// HANDLE CHECKBOX CHANGE
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { checked, value } = e.target;
 
+		// SET THE CHECKED STATE
 		setCheckedState(prevState => ({
 			...prevState,
 			[value]: checked,
 		}));
 
+		// ADD OR REMOVE THE SELECTED OPTION
 		if (checked) {
 			setOptions([...options, value]);
 		} else {
@@ -48,6 +51,7 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 		options.forEach(getImages);
 	}, [options]);
 
+	// HANDLE FORM RESET
 	const handleReset = (e: React.UIEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		setOptions([]);
@@ -58,10 +62,13 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 	return (
 		<form className='flex flex-col mb-16' onSubmit={handleSubmit}>
 			<fieldset className='pl-1 text-xl flex flex-col mb-4'>
+				{/* FORM TITLE */}
 				<legend className='font-bold'>Select one or more breeds</legend>
+				{/* FORM OPTIONS */}
 				<div className='h-40 flex flex-wrap border-2 rounded-lg px-8 py-6 bg-slate-700 overflow-auto gap-4'>
 					{dogList &&
 						dogList.map((dog, i) => (
+							// RENDERING CHECKBOXES
 							<div key={i} className='w-60'>
 								<input
 									type='checkbox'
@@ -77,6 +84,7 @@ const DogListForm: React.FC<DogListFormProps> = ({ dogList, setImages }) => {
 						))}
 				</div>
 			</fieldset>
+			{/* FORM SUBMIT & RESET BUTTONS */}
 			<button
 				className='bg-blue-800 text-white p-2 rounded-lg font-bold mb-2'
 				type='submit'

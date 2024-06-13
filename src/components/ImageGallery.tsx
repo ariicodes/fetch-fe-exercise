@@ -1,7 +1,9 @@
 const ImageGallery = ({ images }: { images: string[] }) => {
 	return (
 		<>
+			{/* IMAGES CONTAINER */}
 			<ul className='flex flex-wrap gap-0 lg:gap-4 justify-center'>
+				{/* MAP THROUGH THE IMAGES ARRAY */}
 				{images.map((image, i) => (
 					<li
 						key={i}
